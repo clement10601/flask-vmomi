@@ -3,9 +3,9 @@ from setuptools import setup
 
 
 setup(
-    name='Flask-Pyvmomi',
+    name='Flask-Vmomi',
     version='1.0.0',
-    url='https://github.com/clement10601/flask-pyvmomi/',
+    url='https://github.com/clement10601/flask-vmomi/',
     license='BSD',
     author='kchwang',
     author_email='kchwang@cs.nctu.edu.tw',
