@@ -27,10 +27,10 @@ class Vmomi(object):
 
     def init_app(self, app):
         self.app = app
-        self.app.config.setdefault('VMware_vCenter_HOST', 'localhost')
-        self.app.config.setdefault('VMware_vCenter_PORT', 443)
-        self.app.config.setdefault('VMware_vCenter_USER', 'Administrator')
-        self.app.config.setdefault('VMware_vCenter_PASSWORD', None)
+        self.app.config.setdefault('VMWARE_VC_HOST', '127.0.0.1')
+        self.app.config.setdefault('VMWARE_VC_PORT', 443)
+        self.app.config.setdefault('VMWARE_VC_USER', 'admin')
+        self.app.config.setdefault('VMWARE_VC_PASSWORD', 'admin')
         #Flask 0.9 or later
         if hasattr(app, 'teardown_appcontext'):
             self.app.teardown_request(self.teardown_request)
@@ -42,22 +42,31 @@ class Vmomi(object):
             self.app.after_request(self.teardown_request)
     
     def connect(self):
-        if self.app.config['VMware_vCenter_HOST']:
-            self.connect_args['host'] = self.app.config['VMware_vCenter_HOST']
-        if self.app.config['VMware_vCenter_PORT']:
-            self.connect_args['port'] = self.app.config['VMware_vCenter_PORT']
-        if self.app.config['VMware_vCenter_USER']:
-            self.connect_args['user'] = self.app.config['VMware_vCenter_USER']
-        if self.app.config['VMware_vCenter_PASSWORD']:
-            self.connect_args['password'] = self.app.config['VMware_vCenter_PASSWORD']
+        if self.app.config['VMWARE_VC_HOST']:
+            self.connect_args['host'] = self.app.config['VMWARE_VC_HOST']
+        if self.app.config['VMWARE_VC_PORT']:
+            self.connect_args['port'] = self.app.config['VMWARE_VC_PORT']
+        if self.app.config['VMWARE_VC_USER']:
+            self.connect_args['user'] = self.app.config['VMWARE_VC_USER']
+        if self.app.config['VMWARE_VC_PASSWORD']:
+            self.connect_args['pwd'] = self.app.config['VMWARE_VC_PASSWORD']
+	
+        print(self.connect_args['host'])
+        print(self.connect_args['port'])
+        print(self.connect_args['user'])
         context = None
         if hasattr(ssl, '_create_unverified_context'):
       	    context = ssl._create_unverified_context()
-        link = SmartConnect(host=args.host,
-                     user=args.user,
-                     pwd=password,
-                     port=int(args.port),
+
+        """
+        link = SmartConnect(host=self.connect_args['host'],
+                     user=self.connect_args['user'],
+                     pwd=self.connect_args['password'],
+                     port=int(self.connect_args['port']),
                      sslContext=context)
+        """
+
+        link = SmartConnect(sslContext=context ,**self.connect_args)
         if not link:
             print("Could not connect to the specified host using specified username and password")
        	    return -1
