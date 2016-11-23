@@ -16,7 +16,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'Pyvmomi'
+        'pyvmomi'
     ],
     classifiers=[
         'Environment :: Web Environment',

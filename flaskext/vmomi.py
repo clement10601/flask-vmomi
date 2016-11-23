@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim
-import pyvmomi
+import pyVmomi
 
 import argparse
 import atexit
