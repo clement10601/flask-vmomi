@@ -50,10 +50,6 @@ class Vmomi(object):
             self.connect_args['user'] = self.app.config['VMWARE_VC_USER']
         if self.app.config['VMWARE_VC_PASSWORD']:
             self.connect_args['pwd'] = self.app.config['VMWARE_VC_PASSWORD']
-	
-        print(self.connect_args['host'])
-        print(self.connect_args['port'])
-        print(self.connect_args['user'])
         context = None
         if hasattr(ssl, '_create_unverified_context'):
       	    context = ssl._create_unverified_context()
@@ -68,10 +64,12 @@ class Vmomi(object):
 
         link = SmartConnect(sslContext=context ,**self.connect_args)
         if not link:
-            print("Could not connect to the specified host using specified username and password")
+            print("[Error] Could not connect to the specified host using specified username and password")
        	    return -1
-        atexit.register(Disconnect, link)
-        return link
+        else:
+            print("[Info] vCenter Connection Successfully established")
+            atexit.register(Disconnect, link)
+            return link
   
     def teardown_request(self, exception):
         ctx = _ctx_stack.top
